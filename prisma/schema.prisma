@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+ 
+  
+}
+
+model item {
+  id            Int      @id @default(autoincrement())
+  name          String
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+  brandId         String?
+  brand Brand? @relation(fields:[brandId] , references:[id])
+  itemModelId String?
+  itemModel brandModel? @relation(fields:[itemModelId] , references:[id])
+  categoryName String?
+  brandName String?
+  modelName String?
+  price         Float
+  stock         Int
+  createdAt     DateTime @default(now())
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  items item[]
+  brand Brand[]
+}
+model Brand{
+  id String @id @default(uuid())
+  name String @unique
+  categoryId String?
+  category Category? @relation(fields: [categoryId] , references: [id])
+  items item[]
+  models brandModel[]
+}
+model brandModel{
+  id String @id @default(uuid())
+  name String
+  brandId String?
+  brand Brand? @relation(fields:[brandId] , references:[id])
+  items item[]
+}
