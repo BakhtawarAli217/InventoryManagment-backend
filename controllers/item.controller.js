@@ -188,8 +188,8 @@ module.exports.updateItem=async (req,res)=>{
         categoryId:category || existingItem.categoryId,
         brandId:brand || existingItem.brandId,
         itemModelId:model || existingItem.itemModelId,
-        price:price || existingItem.price,
-        stock:stock || existingItem.stock,
+        price:Number(price) || existingItem.price,
+        stock:Number(stock) || existingItem.stock,
         categoryName:categoryName || existingItem.categoryName,
         brandName:brandName || existingItem.brandName,
         modelName:modelName || existingItem.modelName
