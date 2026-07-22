@@ -79,7 +79,7 @@ module.exports.getAllModels=async (req,res)=>{
         })
         const total=await prisma.brandModel.count()
         const hasMore=models.length + skip < total
-        return res.status(201).json({message:"Brand Models are fetched successfully" , data:models , hasMore:hasMore})
+        return res.status(201).json({message:"Brand Models are fetched successfully" , data:models , hasMore:hasMore , total:total})
     }catch(e){
         return res.status(500).json({message:"Internal Server Error"})
     }
