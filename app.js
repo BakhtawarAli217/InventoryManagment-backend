@@ -9,7 +9,7 @@ const modelRoutes=require("./routes/model.routes")
 const app=express()
 
 app.use(cors({
-    origin: ["http://localhost:5173" , "https://inventory-managment-software-chi.vercel.app/"],
+    origin: ["http://localhost:5173" , "https://inventory-managment-software-chi.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type"]
 }))
