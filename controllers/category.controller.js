@@ -48,6 +48,7 @@ module.exports.getCategories = async (req, res) => {
       message: "Categories fetched successfully",
       data: categories,
       hasMore: hasMore,
+      total:total
     });
   } catch (e) {
     return res
