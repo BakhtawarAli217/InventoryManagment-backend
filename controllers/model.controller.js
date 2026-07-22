@@ -69,8 +69,17 @@ module.exports.getModelByBrand=async (req,res)=>{
 
 module.exports.getAllModels=async (req,res)=>{
     try{
-        const models=await prisma.brandModel.findMany()
-        return res.status(201).json({message:"Brand Models are fetched successfully" , data:models})
+        const {page , limit}=req.query
+        const parsedPage=parseInt(page)
+        const parsedLimit=parseInt(limit)
+        const skip=(parsedPage-1)*parsedLimit
+        const models=await prisma.brandModel.findMany({
+            skip:skip,
+            take:parsedLimit
+        })
+        const total=await prisma.brandModel.count()
+        const hasMore=models.length + skip < total
+        return res.status(201).json({message:"Brand Models are fetched successfully" , data:models , hasMore:hasMore})
     }catch(e){
         return res.status(500).json({message:"Internal Server Error"})
     }
