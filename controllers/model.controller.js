@@ -52,9 +52,7 @@ module.exports.getModelByBrand=async (req,res)=>{
             where:{
                 brandId:id
             },
-            include:{
-                brand:true
-            },
+            
             skip:skip,
             take:parsedlimit
         })
@@ -77,6 +75,9 @@ module.exports.getAllModels=async (req,res)=>{
         const parsedLimit=parseInt(limit)
         const skip=(parsedPage-1)*parsedLimit
         const models=await prisma.brandModel.findMany({
+            include:{
+                brand:true
+            },
             skip:skip,
             take:parsedLimit
         })
