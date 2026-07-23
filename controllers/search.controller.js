@@ -54,25 +54,59 @@ module.exports.searchItem = async (req, res) => {
       .json({ message: "Internal Server Error", error: e.message });
   }
 };
-module.exports.searchBrand=async (req,res)=>{
-    try{
-        const {q}=req.query
-        if(!q){
-            return res.status(404).json({message:"Search query is required"})
-        }
-        if(q.length<2){
-            return res.status(400).json({message:"Search query must be atleast 2 characters long"})
-        }
-        const brand=await prisma.brand.findMany({
-            where:{
-                name:{
-                  contains:q,
-                  mode:"insensitive"
-                }
-            }
-        })
-        return res.status(200).json({message:"Brand fetched Successfully" , data:brand})
-    }catch(e){
-        return res.status(500).json({message:"Internal Server error" , error:e.message})
+module.exports.searchBrand = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) {
+      return res.status(404).json({ message: "Search query is required" });
     }
-}
+    if (q.length < 2) {
+      return res
+        .status(400)
+        .json({ message: "Search query must be atleast 2 characters long" });
+    }
+    const brand = await prisma.brand.findMany({
+      where: {
+        name: {
+          contains: q,
+          mode: "insensitive",
+        },
+      },
+    });
+    return res
+      .status(200)
+      .json({ message: "Brand fetched Successfully", data: brand });
+  } catch (e) {
+    return res
+      .status(500)
+      .json({ message: "Internal Server error", error: e.message });
+  }
+};
+module.exports.searchModel = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) {
+      return res.status(404).json({ message: "Search Query is required" });
+    }
+    if (q.length < 2) {
+      return res
+        .status(400)
+        .json({ message: "Search query must be atleast 2 characters long" });
+    }
+    const model = await prisma.brandModel.findMany({
+      where: {
+        name: {
+          contains: q,
+          mode: "insensitive",
+        },
+      },
+    });
+    return res
+      .status(200)
+      .json({ message: "Models fetched Successfully", data: model });
+  } catch (e) {
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: e.message });
+  }
+};
