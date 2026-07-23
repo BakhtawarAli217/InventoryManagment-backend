@@ -1,0 +1,9 @@
+const express=require("express")
+const searchController=require("../controllers/search.controller")
+const router=express.Router()
+
+
+router.get("/search-items" ,  searchController.searchItem)
+
+
+module.exports=router

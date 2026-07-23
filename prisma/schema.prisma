@@ -24,6 +24,8 @@ model item {
   price         Float
   stock         Int
   createdAt     DateTime @default(now())
+  @@index([name])
+  @@index([price])
 }
 
 model Category {

@@ -6,6 +6,7 @@ const itemsRotues=require("./routes/items.routes")
 const categoryRoutes=require("./routes/category.routes")
 const brandRoutes=require("./routes/brand.routes")
 const modelRoutes=require("./routes/model.routes")
+const searchRoutes=require("./routes/search.routes")
 const app=express()
 
 app.use(cors({
@@ -19,6 +20,7 @@ app.use("/items" , itemsRotues)
 app.use("/category" , categoryRoutes)
 app.use("/brand" , brandRoutes)
 app.use("/model" , modelRoutes)
+app.use("/search" , searchRoutes)
 
 
 app.get("/" , (req,res)=>{
