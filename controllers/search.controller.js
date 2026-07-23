@@ -100,6 +100,9 @@ module.exports.searchModel = async (req, res) => {
           mode: "insensitive",
         },
       },
+      include:{
+        brand:true
+      }
     });
     return res
       .status(200)
