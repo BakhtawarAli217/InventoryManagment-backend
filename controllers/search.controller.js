@@ -20,7 +20,7 @@ module.exports.searchItem = async (req, res) => {
     if (minPrice && maxPrice && Number(minPrice) > Number(maxPrice)) {
       return res
         .status(400)
-        .json({ message: "Search Query must be at least 2 characters" });
+        .json({ message: "Min Price must be smaller than Max Price" });
     }
     const where = {};
     if (name) {
