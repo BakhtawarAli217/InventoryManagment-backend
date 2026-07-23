@@ -8,7 +8,7 @@ module.exports.searchItem = async (req, res) => {
     //   return res.status(404).json({ message: "Search Query is Required" });
     // }
 
-    if (name?.length < 2) {
+    if (name && name?.length < 2) {
       return res
         .status(400)
         .json({ message: "Search Query must be greater then two words" });
