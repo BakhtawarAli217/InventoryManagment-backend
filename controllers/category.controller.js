@@ -41,6 +41,9 @@ module.exports.getCategories = async (req, res) => {
     const categories = await prisma.category.findMany({
       skip: skip,
       take: parsedlimit,
+      orderBy:{
+        createdAt:"desc"
+      }
     });
     const total = await prisma.category.count();
     const hasMore = categories.length + skip < total;

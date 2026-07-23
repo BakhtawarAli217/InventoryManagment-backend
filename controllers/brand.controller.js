@@ -45,7 +45,10 @@ module.exports.getAllBrands=async (req,res)=>{
         const skip=(parsedPage-1) * parsedlimit;
         const brands=await prisma.brand.findMany({
             skip:skip,
-            take:parsedlimit
+            take:parsedlimit,
+            orderBy:{
+                createdAt:"desc"
+            }
         })
         const total=await prisma.brand.count()
         const hasMore=brands.length + skip < total

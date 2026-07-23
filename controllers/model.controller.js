@@ -79,7 +79,10 @@ module.exports.getAllModels=async (req,res)=>{
                 brand:true
             },
             skip:skip,
-            take:parsedLimit
+            take:parsedLimit,
+            orderBy:{
+                createdAt:"desc"
+            }
         })
         const total=await prisma.brandModel.count()
         const hasMore=models.length + skip < total

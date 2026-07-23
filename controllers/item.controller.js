@@ -83,6 +83,9 @@ module.exports.getAllItems=async (req,res)=>{
     const items=await prisma.item.findMany({
       skip:skip,
       take:parsedlimit,
+      orderBy:{
+        createdAt:"desc"
+      }
     })
     const total=await prisma.item.count()
     const hasMore=items.length + skip < total
