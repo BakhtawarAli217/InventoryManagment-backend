@@ -113,3 +113,32 @@ module.exports.searchModel = async (req, res) => {
       .json({ message: "Internal Server Error", error: e.message });
   }
 };
+
+module.exports.searchCategory = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) {
+      return res.status(404).json({ message: "Search Query is required" });
+    }
+    if (q.length < 2) {
+      return res
+        .status(400)
+        .json({ message: "Search query must be atleast 2 characters long" });
+    }
+    const category = await prisma.category.findMany({
+      where: {
+        name: {
+          contains: q,
+          mode: "insensitive",
+        },
+      }
+    });
+    return res
+      .status(200)
+      .json({ message: "Category fetched Successfully", data: category });
+  } catch (e) {
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: e.message });
+  }
+};
