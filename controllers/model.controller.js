@@ -52,6 +52,9 @@ module.exports.getModelByBrand=async (req,res)=>{
             where:{
                 brandId:id
             },
+            include:{
+                brand:true
+            },
             skip:skip,
             take:parsedlimit
         })
