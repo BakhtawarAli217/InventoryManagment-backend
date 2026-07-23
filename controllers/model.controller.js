@@ -100,16 +100,18 @@ module.exports.deleteModel=async (req,res)=>{
         const isModelExist=await prisma.brandModel.findUnique({
             where:{
                 id:id
+            },
+            include:{
+                brand:true
             }
         })
         if(!isModelExist){
             return res.status(404).json({message:"Invalid Model Id"})
         }
-        await prisma.item.deleteMany({
-            where:{
-                itemModelId:id
-            }
-        })
+        if(isModelExist.items.length>0){
+            return res.status(400).json({message:"An inventory of this product is already exist try deleting the inventory first inOrder to this model"})
+        }
+
         const deletedModel=await prisma.brandModel.delete({
             where:{
                 id:id

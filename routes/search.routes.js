@@ -4,6 +4,7 @@ const router=express.Router()
 
 
 router.get("/search-items" ,  searchController.searchItem)
+router.get("/search-brand" , searchController.searchBrand)
 
 
 module.exports=router

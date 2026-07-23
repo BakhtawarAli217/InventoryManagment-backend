@@ -103,11 +103,17 @@ module.exports.deleteBrand=async (req,res)=>{
         const isBrandExist=await prisma.brand.findUnique({
             where:{
                 id:id
+            },
+            include:{
+                items:true
             }
         })
         if(!isBrandExist){
             return res.status(404).json({message:"Invalid Brand Id"})
         }
+       if(isBrandExist.items.length>0){
+        return res.status(400).json({message:"An inventory exist related to this brand try deleting invetory first inOrder to delete this"})
+       }
         const deletedBrand=await prisma.brand.delete({
             where:{
                 id:id
@@ -116,5 +122,25 @@ module.exports.deleteBrand=async (req,res)=>{
         return res.status(200).json({message:"Brand deleted successfully" , data:deletedBrand})
     }catch(e){
         return res.status(500).json({message:"Internal Server Error" , error:e.message})
+    }
+}
+
+module.exports.searchBrand=async (req,res)=>{
+    try{
+        const {q}=req.query
+        if(!q){
+            return res.status(404).json({message:"Search query is required"})
+        }
+        if(q.length<2){
+            return res.status(400).json({message:"Search query must be atleast 2 characters long"})
+        }
+        const brand=await prisma.brand.findMany({
+            where:{
+                name:q
+            }
+        })
+        return res.status(200).json({message:"Brand fetched Successfully" , data:brand})
+    }catch(e){
+        return res.status(500).json({message:"Internal Server error" , error:e.message})
     }
 }
