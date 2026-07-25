@@ -19,6 +19,10 @@ module.exports.registerUser=async (req,res)=>{
         const existingUser=await prisma.user.findUnique({
             where:{
                 email
+            },
+            select:{
+                name:true,
+                email:true
             }
         })
         if(existingUser){

@@ -22,7 +22,9 @@ async (email , password ,done)=>{
         if(!match){
             return done(null , false , {message:"Invalid email or password"})
         }
-        return done(null , user)
+
+        const {password:_ , ...safeUser}=user
+        return done(null , safeUser)
     }catch(e){
         return done(e)
     }
@@ -38,6 +40,12 @@ passport.deserializeUser(async (id , done)=>{
         const user=await prisma.user.findUnique({
             where:{
                 id
+            },
+            select:{
+                name:true,
+                email:true,
+                createdAt:true,
+                updatedAt:true
             }
         }) 
         done(null , user)
