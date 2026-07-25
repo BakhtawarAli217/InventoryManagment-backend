@@ -15,6 +15,7 @@ const app=express()
 app.use(cors({
     origin: ["http://localhost:5173" , "https://inventory-managment-software-chi.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials:true,
     allowedHeaders: ["Content-Type"]
 }))
 app.use(express.urlencoded({extended:true}))
