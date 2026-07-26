@@ -183,7 +183,7 @@ module.exports.updatePassword = async (req, res) => {
       });
     }
 
-    const isBlackListed=await prisma.blackListedToken.findUnique({
+    const isBlackListed=await prisma.blackListedToken.findFirst({
       where:{
         token
       }
