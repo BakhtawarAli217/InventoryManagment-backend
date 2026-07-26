@@ -22,6 +22,11 @@ app.use(cors({
     allowedHeaders: ["Content-Type"]
 }))
 app.use(express.urlencoded({extended:true}))
+app.use(
+    "/api/payment/webhook",
+    express.raw({type:"application/json"})
+)
+
 app.use(express.json())
 app.use(session({
     secret:process.env.SESSION_SECRETE,
