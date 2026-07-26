@@ -17,5 +17,7 @@ router.post(
 router.post("/login" , userController.loginUser )
 router.get("/profile" , authMiddleWare.authUser , userController.profile)
 router.post("/Generate-Reset-Token" , userController.GenerateResetToken)
+router.get("/Verify-token" , userController.verifyToken)
+router.patch("/Update-password" , userController.updatePassword)
 
 module.exports = router;

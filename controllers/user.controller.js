@@ -118,3 +118,117 @@ module.exports.GenerateResetToken = async (req, res) => {
       .json({ message: "Internal Server Error", error: e.message });
   }
 };
+module.exports.verifyToken = async (req, res) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).json({
+        message: "Token is required"
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRETE);
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decoded.id
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Valid token",
+      success:true
+    });
+
+  } catch (e) {
+    if (e.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Token has expired"
+      });
+    }
+
+    if (e.name === "JsonWebTokenError") {
+      return res.status(401).json({
+        message: "Invalid token"
+      });
+    }
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: e.message
+    });
+  }
+};
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { password } = req.body;
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).json({
+        message: "Token is required"
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        message: "Password is required"
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRETE);
+    const id = decoded.id;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        password: hashPassword
+      }
+    });
+
+    return res.status(200).json({
+      message: "Password has been changed successfully"
+    });
+
+  } catch (e) {
+    if (e.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Token has expired"
+      });
+    }
+
+    if (e.name === "JsonWebTokenError") {
+      return res.status(401).json({
+        message: "Invalid token"
+      });
+    }
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: e.message
+    });
+  }
+};
