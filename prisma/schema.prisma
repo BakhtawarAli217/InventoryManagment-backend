@@ -43,6 +43,7 @@ model Brand{
   createdAt DateTime? @default(now())
   items item[]
   models brandModel[]
+  
 }
 model brandModel{
   id String @id @default(uuid())
@@ -57,6 +58,7 @@ model User{
   email String @unique
   password String
   name String
+  orders Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -64,4 +66,15 @@ model User{
 model BlackListedToken{
   id String @id @default(uuid())
   token String 
+}
+
+model Order{
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId] , references: [id])
+  status String
+  stripeSessionId String @default("Pending")
+  amount Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
