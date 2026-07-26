@@ -43,6 +43,7 @@ passport.deserializeUser(async (id , done)=>{
             },
             select:{
                 name:true,
+                id:true,
                 email:true,
                 createdAt:true,
                 updatedAt:true
