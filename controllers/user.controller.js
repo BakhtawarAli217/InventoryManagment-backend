@@ -183,6 +183,15 @@ module.exports.updatePassword = async (req, res) => {
       });
     }
 
+    const isBlackListed=await prisma.findUnique({
+      where:{
+        token
+      }
+    })
+    if(isBlackListed){
+      return res.status(400).json({message:"Invalid Token"})
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRETE);
     const id = decoded.id;
 
@@ -208,6 +217,12 @@ module.exports.updatePassword = async (req, res) => {
         password: hashPassword
       }
     });
+
+    await prisma.blackListedToken.create({
+      data:{
+        token
+      }
+    })
 
     return res.status(200).json({
       message: "Password has been changed successfully"
