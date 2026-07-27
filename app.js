@@ -10,6 +10,7 @@ const searchRoutes=require("./routes/search.routes")
 const userRoutes=require("./routes/user.routes")
 const passport=require("./config/passport.config")
 const paymentRoutes=require("./routes/payment.routes")
+const subscriptionRoutes=require("./routes/subscription.routes")
 const session=require("express-session")
 const app=express()
 
@@ -48,6 +49,7 @@ app.use("/model" , modelRoutes)
 app.use("/search" , searchRoutes)
 app.use("/user" , userRoutes)
 app.use("/api/payment" , paymentRoutes)
+app.use("/subscriptions" , subscriptionRoutes)
 
 app.get("/" , (req,res)=>{
     res.send("Backend is working")

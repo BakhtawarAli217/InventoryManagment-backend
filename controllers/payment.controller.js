@@ -67,13 +67,11 @@ module.exports.createCheckOutSession = async (req, res) => {
 };
 module.exports.webhook = async (req,res)=>{
     try {
-
-        console.log("Webhook received");
+      console.log("Webhook received");
 
         const sig = req.headers["stripe-signature"];
 
-        let event;
-
+   
         try {
             event = stripe.webhooks.constructEvent(
                 req.body,
@@ -89,14 +87,12 @@ module.exports.webhook = async (req,res)=>{
         }
 
 
-        console.log("Event:", event.type);
-
 
         if(event.type === "checkout.session.completed"){
 
             const session = event.data.object;
 
-            console.log("Session metadata:", session.metadata);
+           
 
             const orderId = session.metadata.order;
 
@@ -110,7 +106,6 @@ module.exports.webhook = async (req,res)=>{
                 }
             });
 
-            console.log("Order updated:", orderId);
         }
 
 
