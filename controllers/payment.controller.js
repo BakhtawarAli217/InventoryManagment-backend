@@ -4,7 +4,8 @@ const prisma = require("../prismaClient");
 module.exports.createCheckOutSession = async (req, res) => {
   try {
     const userId = req.user.id;
-    const existingOrder = await prisma.order.findFirst({
+ 
+    const existingOrder = await prisma.subscriptions.findFirst({
       where: {
         userId: userId,
         status: "Pending",
@@ -17,7 +18,7 @@ module.exports.createCheckOutSession = async (req, res) => {
         order: existingOrder,
       });
     }
-    const order = await prisma.order.create({
+    const subscription = await prisma.subscriptions.create({
       data: {
         userId: userId,
         amount: 1000,
@@ -47,7 +48,7 @@ module.exports.createCheckOutSession = async (req, res) => {
       cancel_url: "https://inventory-managment-software-chi.vercel.app/",
     });
 
-    await prisma.order.update({
+    await prisma.subscriptions.update({
       where: {
         id: order.id,
       },
@@ -97,7 +98,7 @@ module.exports.webhook = async (req,res)=>{
             const orderId = session.metadata.order;
 
 
-            await prisma.order.update({
+            await prisma.subscriptions.update({
                 where:{
                     id: orderId
                 },

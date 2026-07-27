@@ -58,7 +58,7 @@ model User{
   email String @unique
   password String
   name String
-  orders Order[]
+  orders Subscriptions[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -68,7 +68,7 @@ model BlackListedToken{
   token String 
 }
 
-model Order{
+model Subscriptions{
   id String @id @default(uuid())
   userId String
   user User @relation(fields: [userId] , references: [id])
