@@ -6,7 +6,7 @@ const upload=require("../middlewares/upload")
 
 
 
-router.post("/Add-item" , authUser.authUser , upload.single("image") , itemContoller.addItem )
+router.post("/Add-item"  , upload.single("image") , itemContoller.addItem )
 router.get("/Get-All-Items" , authUser.authUser , itemContoller.getAllItems)
 router.delete("/Delete-Item/:id" , authUser.authUser , itemContoller.deleteItem)
 router.get("/Get-Item/:id" , authUser.authUser , itemContoller.getItemById)
