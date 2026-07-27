@@ -13,9 +13,7 @@ module.exports.findSubscriptionByUserId = async (req, res) => {
     
 
     if (!subscription) {
-      return res.status(404).json({
-        message: "User has no subscription",
-      });
+      return res.status(200);
     }
 
 
