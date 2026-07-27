@@ -23,6 +23,7 @@ model item {
   modelName String?
   price         Float
   stock         Int
+  image         Json
   createdAt     DateTime @default(now())
   @@index([name])
   @@index([price])

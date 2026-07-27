@@ -1,6 +1,7 @@
 const express = require("express");
 const prisma = require("../prismaClient");
 const itemServices = require("../Services/item.service");
+const cloudinary=require("../config/cloudinary.config")
 
 module.exports.addItem = async (req, res) => {
   try {
@@ -14,6 +15,12 @@ module.exports.addItem = async (req, res) => {
     if (stock <= 0) {
       return res.status(400).json({ message: "Invalid Stock Value" });
     }
+    if(!req.file){
+      return res.status(400).json({message:"Image is required"})      
+    }
+    const url=req.file.path
+    const public_id=req.file.filename
+    
     const isCategory = await prisma.category.findUnique({
       where: {
         id: category,
@@ -62,16 +69,24 @@ module.exports.addItem = async (req, res) => {
       price: Number(price),
       categoryName:categoryName,
       brandName:brandName,
-      modelName:modelName
+      modelName:modelName,
+      image:{
+        url:url,
+        public_id:public_id
+      }
     });
    
     return res
       .status(201)
       .json({ message: "Item Added Successfully", data: item });
   } catch (e) {
+    if (req.file) {
+    await cloudinary.uploader.destroy(req.file.filename);
+}
     res
       .status(500)
       .json({ message: "Internal Server Error", error: e.message });
+      
   }
 };
 module.exports.getAllItems=async (req,res)=>{
