@@ -8,7 +8,7 @@ module.exports.findSubscriptionByUserId = async (req, res) => {
       return;
     }
 
-    const subscription = await prisma.order.findFirst({
+    const subscription = await prisma.subscriptions.findFirst({
       where: {
         userId: id,
       },
