@@ -7,6 +7,7 @@ module.exports.createCheckOutSession = async (req, res) => {
     const existingOrder = await prisma.order.findFirst({
       where: {
         userId: userId,
+        status: "Pending",
       },
     });
 
@@ -69,7 +70,7 @@ module.exports.webhook = async (req,res)=>{
       console.log("Webhook received");
 
         const sig = req.headers["stripe-signature"];
-
+      let event;
    
         try {
             event = stripe.webhooks.constructEvent(
