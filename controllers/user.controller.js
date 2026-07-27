@@ -47,14 +47,16 @@ module.exports.registerUser = async (req, res) => {
         password: hasedPassword,
       },
     });
-    req.login(user , (err)=>{
+
+    await new Promise((resolve , reject)=>{
+         req.login(user , (err)=>{
       if(err){
-        return res.status(500).json({
-          message:"Login failed  Try to login manually",
-          error:e.message
-        })
+        reject(err)
       }
+      resolve()
     })
+    })
+    
     return res.status(201).json({ message: "User successfully registered" });
   } catch (e) {
     return res
