@@ -4,6 +4,10 @@ module.exports.findSubscriptionByUserId = async (req, res) => {
   try {
     const { id } = req.query;
 
+    if(!id){
+      return;
+    }
+
     const subscription = await prisma.order.findFirst({
       where: {
         userId: id,
