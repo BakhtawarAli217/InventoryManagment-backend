@@ -7,7 +7,6 @@ module.exports.createCheckOutSession = async (req, res) => {
     const existingOrder = await prisma.order.findFirst({
       where: {
         userId: userId,
-        status: "Pending",
       },
     });
 
