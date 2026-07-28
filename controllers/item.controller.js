@@ -139,6 +139,7 @@ module.exports.deleteItem = async (req, res) => {
     if (!existingItem) {
       return res.status(404).json({ message: "Item not found" });
     }
+    await cloudinary.uploader.destroy(existingItem.image.public_id)
 
     const deletedItem = await prisma.item.delete({
       where: {
@@ -209,6 +210,13 @@ module.exports.updateItem = async (req, res) => {
     if (!id) {
       return res.status(404).json({ message: "Item Id is required" });
     }
+    
+    let url;
+    let public_id;
+    if(req.file){
+      url=req.file.path
+      public_id=req.file.filename
+    } 
     const parsedId = parseInt(id);
     const existingItem = await prisma.item.findUnique({
       where: {
@@ -218,7 +226,10 @@ module.exports.updateItem = async (req, res) => {
     if (!existingItem) {
       return res.status(404).json({ message: "Invalid Item Id" });
     }
-    console.log(categoryName);
+    if(req.file){
+    await cloudinary.uploader.destroy(existingItem.image.public_id)
+    }
+
     const updatedItem = await prisma.item.update({
       where: {
         id: parsedId,
@@ -233,6 +244,10 @@ module.exports.updateItem = async (req, res) => {
         categoryName: categoryName || existingItem.categoryName,
         brandName: brandName || existingItem.brandName,
         modelName: modelName || existingItem.modelName,
+        image:{
+          url:url,
+          public_id:public_id
+        }
       },
     });
     return res

@@ -14,10 +14,10 @@ const subscriptionRoutes=require("./routes/subscription.routes")
 const session=require("express-session")
 const app=express()
 
-
+const isProduction = process.env.NODE_ENV === "production";
 app.set("trust proxy",1);
 app.use(cors({
-    origin: ["http://localhost:5173" , "https://inventory-managment-software-chi.vercel.app"],
+    origin: ["http://localhost:5173","http://localhost:3000" , "https://inventory-managment-software-chi.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials:true,
     allowedHeaders: ["Content-Type"]
@@ -36,8 +36,8 @@ app.use(session({
     cookie:{
         maxAge:30 * 24 * 60 * 60 * 1000,
         httpOnly:true,
-        sameSite:"none",
-        secure:true
+         secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     }
 }))
 app.use(passport.initialize())

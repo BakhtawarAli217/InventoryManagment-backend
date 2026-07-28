@@ -9,7 +9,8 @@ module.exports.createItem = async ({
   price,
   categoryName,
   brandName,
-  modelName
+  modelName,
+  image
 }) => {
   try {
     const item = await prisma.item.create({
@@ -22,7 +23,8 @@ module.exports.createItem = async ({
         price,
         categoryName,
         brandName,
-        modelName
+        modelName,
+        image
       },
     });
     return item;
