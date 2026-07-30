@@ -1,4 +1,5 @@
-const passport=require("passport")
+const Passport=require("passport").Passport
+const passport=new Passport()
 const localStrategy=require("passport-local").Strategy
 const bcrypt=require("bcrypt")
 const prisma=require("../prismaClient")

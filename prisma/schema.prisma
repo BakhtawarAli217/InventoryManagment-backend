@@ -24,6 +24,8 @@ model item {
   price         Float
   stock         Int
   image         Json
+  discount      Float?
+  discountType  String?
   createdAt     DateTime @default(now())
   @@index([name])
   @@index([price])
@@ -38,7 +40,7 @@ model Category {
 }
 model Brand{
   id String @id @default(uuid())
-  name String @unique
+  name String 
   categoryId String?
   category Category? @relation(fields: [categoryId] , references: [id])
   createdAt DateTime? @default(now())
@@ -78,4 +80,29 @@ model Subscriptions{
   amount Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+model Customers{
+  id String @id @default(uuid())
+  name String
+  email String 
+  password String
+  homeAddress String
+  Country String
+  State String
+  City String
+  phone String
+  order Order[]
+}
+
+model Order{
+  id String @id @default(uuid())
+  userId String
+  user Customers @relation(fields: [userId] , references: [id])
+  customerData Json
+  products Json
+  amount Float
+  paymentId String
+  paymentStatus String
+  orderStatus String
+  createdAt DateTime @default(now())
 }

@@ -124,3 +124,19 @@ module.exports.webhook = async (req,res)=>{
         });
     }
 };
+
+module.exports.createPayment=async (req,res)=>{
+  try{
+    const {amount , product , customer}=req.body
+    const paymentIntents=await stripe.paymentIntents.create({
+      amount:Math.round(amount*100),
+      currency:"usd",
+      metadata:{
+        customerName:customer.name
+      }
+    })
+    res.status(200).json({clientSecret:paymentIntents.client_secret})
+  }catch(e){
+    return res.status(500).json({message:"Internal Server Error" , error:e.message})
+  }
+}

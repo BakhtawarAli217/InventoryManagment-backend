@@ -11,7 +11,7 @@ module.exports.uploadBrand=async (req,res)=>{
         if(!categoryId){
             return res.status(404).json({message:"Category Id is required"})
         }
-        const isexist=await prisma.category.findUnique({
+        const isexist=await prisma.category.findFirst({
             where:{
                 id:categoryId
             }
@@ -21,7 +21,7 @@ module.exports.uploadBrand=async (req,res)=>{
         }
         const normalizedName=name.toLowerCase().trim()
 
-        const isexsit=await prisma.brand.findUnique({
+        const isexsit=await prisma.brand.findFirst({
             where:{
                 name:normalizedName,
                 categoryId:categoryId
@@ -33,6 +33,7 @@ module.exports.uploadBrand=async (req,res)=>{
         const brand=await brandServices.createBrand({name , categoryId})
         return res.status(201).json({message:"Brand Successfully created" , data:brand})
     }catch(e){
+        console.log(e)
         return res.status(500).json({message:"Internal Server Error" , error:e.message})
     }
 }
@@ -46,6 +47,9 @@ module.exports.getAllBrands=async (req,res)=>{
         const brands=await prisma.brand.findMany({
             skip:skip,
             take:parsedlimit,
+            include:{
+                category:true
+            },
             orderBy:{
                 createdAt:"desc"
             }
