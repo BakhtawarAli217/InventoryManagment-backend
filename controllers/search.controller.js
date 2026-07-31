@@ -142,3 +142,25 @@ module.exports.searchCategory = async (req, res) => {
       .json({ message: "Internal Server Error", error: e.message });
   }
 };
+
+module.exports.searchOrder=async (req,res)=>{
+  try{
+    const {q}=req.query
+    if(!q || q.trim==""){
+      return res.status(400).json({message:"Search Query is required"})
+    }
+    const search=q.trim()
+    const order=await prisma.order.findMany({
+      where:{
+        customerData:{
+          path:["name" , "email" , "phone"],
+          string_contains:search,
+          mode:"insensitive"
+        }
+      }
+    })
+    return res.status(200).json({message:"Result Feteched Successfully" , data:order})
+  }catch(e){
+    return res.status(500).json({message:"Internal Server Error" , error:e.message})
+  }
+}

@@ -10,7 +10,6 @@ const searchRoutes=require("./routes/search.routes")
 const userRoutes=require("./routes/user.routes")
 const passport=require("./config/passport.config")
 const paymentRoutes=require("./routes/payment.routes")
-const customerPassport=require("./config/customerPassport.config")
 const subscriptionRoutes=require("./routes/subscription.routes")
 const customerRoutes=require("./routes/customer.routes")
 const orderRoutes=require("./routes/order.routes")
@@ -34,6 +33,7 @@ app.use(
 app.use(express.json())
 app.use(session({
     secret:process.env.SESSION_SECRETE,
+    name:"session.sid",
     resave:false,
     saveUninitialized:false,
     cookie:{
@@ -43,9 +43,8 @@ app.use(session({
       sameSite: isProduction ? "none" : "lax",
     }
 }))
-app.use("/user"  ,passport.initialize(), passport.session())
-app.use("/customer"  , customerPassport.initialize(), customerPassport.session())
-app.use("/order" , customerPassport.initialize() , customerPassport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 app.use("/items" , itemsRotues)
 app.use("/category" , categoryRoutes)
 app.use("/brand" , brandRoutes)
@@ -53,7 +52,6 @@ app.use("/model" , modelRoutes)
 app.use("/search" , searchRoutes)
 app.use("/user" , userRoutes)
 app.use("/api/payment" , paymentRoutes)
-app.use("/api/payment/create-payment" , customerPassport.initialize() , customerPassport.session())
 app.use("/subscriptions" , subscriptionRoutes)
 app.use("/customer"  ,customerRoutes)
 app.use("/order" , orderRoutes)

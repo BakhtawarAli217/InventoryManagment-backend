@@ -22,5 +22,7 @@ router.post(
 router.post("/login", customerController.loginCustomer);
 
 router.get("/profile", customerAuthMiddleware.authCustomer, customerController.getCustomerProfile);
+router.get("/Get-All-Customers" , customerController.getAllCustomers)
+router.delete("/delete-customer" , customerController.deleteCustomer)
 
 module.exports = router;
